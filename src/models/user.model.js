@@ -25,8 +25,9 @@ const userSchema = new Schema(
             trim: true,
             index: true,
         },
-        avatar: { type: String, required: true }, // cloudinary url
-        coverImage: { type: String }, // cloudinary url
+        // Cloudinary URL for user avatar and coverImage
+        avatar: { type: String, required: true },
+        coverImage: { type: String },
         watchHistory: { type: Schema.Types.ObjectId, ref: "Video" },
         password: { type: String, required: [true, "Password is Required!"] },
         refreshToken: { type: String },
@@ -34,8 +35,8 @@ const userSchema = new Schema(
     { timestamps: true }
 );
 
-// not used arrow function, regular function to used 'this' keyword for userSchema data
-
+// Used 'this' keyword
+// Pre-save middleware to hash the password before saving it to the database
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
 
@@ -43,11 +44,13 @@ userSchema.pre("save", async function (next) {
     next();
 });
 
-userSchema.method.isPasswordCorrect = async function (password) {
+// Method to compare the provided password with the stored hashed password
+userSchema.methods.isPasswordCorrect = async function (password) {
     return await bcrypt.compare(password, this.password);
 };
 
-userSchema.method.generateAccessToken = function () {
+// Method to generate an access token on short time for the user
+userSchema.methods.generateAccessToken = function () {
     return jwt.sign(
         {
             _id: this._id,
@@ -56,17 +59,22 @@ userSchema.method.generateAccessToken = function () {
             fullName: this.fullName,
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+        {
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+        }
     );
 };
 
-userSchema.method.generateRefreshToken = function () {
+// Method to generate a refresh token on long time for the user
+userSchema.methods.generateRefreshToken = function () {
     return jwt.sign(
         {
             _id: this._id,
         },
         process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
+        {
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
+        }
     );
 };
 
