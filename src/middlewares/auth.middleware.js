@@ -3,12 +3,12 @@ import { ApiError } from "../utils/ApiErrors.js";
 import { User } from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 
-export const verifyJWT = asyncHandler(async (req, res, next) => {
+export const verifyJWT = asyncHandler(async (req, _, next) => {
     try {
-        console.log(req?.["Authorization"]);
+        // FIXME: Fix this code
 
         const token =
-            req.cookies?.accessToken ||
+            req.cookie?.accessToken ||
             req.header("Authorization")?.replace("Bearer ", "");
 
         if (!token) {
