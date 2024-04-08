@@ -9,6 +9,8 @@ import jwt from "jsonwebtoken";
 const generateToken = async (userId) => {
     try {
         const user = await User.findById(userId);
+
+        // Generate access and refresh tokens by user method
         const accessToken = await user.generateAccessToken();
         const refreshToken = await user.generateRefreshToken();
 
@@ -72,10 +74,10 @@ const registerUser = asyncHandler(async (req, res, _) => {
     let coverImageLocalPath;
     if (
         req.files &&
-        Array.isArray(req.files.coverImage) &&
-        req.files.coverImage.length > 0
+        Array.isArray(req.files?.coverImage) &&
+        req.files?.coverImage.length > 0
     ) {
-        coverImageLocalPath = req.files.coverImage[0].path;
+        coverImageLocalPath = req.files?.coverImage[0]?.path;
     }
     const coverImage = await uploadOnCloudinary(coverImageLocalPath);
 
@@ -153,13 +155,13 @@ const loginUser = asyncHandler(async (req, res, _) => {
 
     const options = {
         httpOnly: true,
-        secure: true,
+        // secure: true,
     };
 
     return res
         .status(200)
-        .cookie("accessToken", accessToken, options)
         .cookie("refreshToken", refreshToken, options)
+        .cookie("accessToken", accessToken, options)
         .json(
             new ApiResponse(
                 200,
@@ -180,13 +182,13 @@ const logoutUser = asyncHandler(async (req, res, _) => {
 
     const options = {
         httpOnly: true,
-        secure: true,
+        // secure: true,
     };
 
     return res
         .status(200)
-        .clearCookie("accessToken", options)
         .clearCookie("refreshToken", options)
+        .clearCookie("accessToken", options)
         .json(new ApiResponse(200, {}, "User ⭐ Logged Out ⭐ Successfully"));
 });
 
@@ -215,7 +217,7 @@ const refreshAccessToken = asyncHandler(async (req, res, _) => {
 
         const options = {
             httpOnly: true,
-            secure: true,
+            // secure: true,
         };
         const { accessToken, newRefreshToken } = await generateToken(user._id);
 
@@ -226,7 +228,7 @@ const refreshAccessToken = asyncHandler(async (req, res, _) => {
             .json(
                 new ApiResponse(
                     200,
-                    { accessToken, refreshToken: newRefreshToken },
+                    { user, accessToken, refreshToken: newRefreshToken },
                     "⭐ Access Token ⭐ successfully"
                 )
             );
@@ -258,7 +260,7 @@ const getCurrentUser = asyncHandler(async (req, res, _) => {
         .json(
             new ApiResponse(
                 200,
-                req?.user,
+                req.user,
                 "⭐ Get Current User ⭐ Successfully"
             )
         );
@@ -290,7 +292,7 @@ const updateAccountDetails = asyncHandler(async (req, res, _) => {
 
 const updateUserAvatar = asyncHandler(async (req, res, _) => {
     // multer used to get avatar file
-    const avatarLocalPath = req?.file?.path;
+    const avatarLocalPath = req.files?.avatar[0]?.path;
     if (!avatarLocalPath) {
         throw new ApiError(401, "❌ Error While Avatar file is Missing");
     }
@@ -322,8 +324,9 @@ const updateUserAvatar = asyncHandler(async (req, res, _) => {
 const updateUserCoverImage = asyncHandler(async (req, res, _) => {
     // multer used to get avatar file
     const coverImageLocalPath = req?.file?.path;
+    console.log(coverImageLocalPath)
     if (!coverImageLocalPath) {
-        throw new ApiError(401, "❌ Error While Avatar file is Missing");
+        throw new ApiError(401, "❌ Error While coverImage file is Missing");
     }
 
     const coverImage = await uploadOnCloudinary(coverImageLocalPath);

@@ -5,11 +5,12 @@ import jwt from "jsonwebtoken";
 
 export const verifyJWT = asyncHandler(async (req, _, next) => {
     try {
-        // FIXME: Fix this code
-
         const token =
-            req.cookie?.accessToken ||
-            req.header("Authorization")?.replace("Bearer ", "");
+            req.cookies?.accessToken ||
+            req.headers["authorization"]?.replace("Bearer ", "") ||
+            "";
+
+        // console.log("middleware accessToken: ", token);
 
         if (!token) {
             throw new ApiError(401, "❌ Un-Authorization Request");
