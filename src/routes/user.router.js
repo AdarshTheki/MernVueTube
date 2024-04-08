@@ -10,6 +10,7 @@ import {
     getCurrentUser,
     changeCurrentPassword,
     getUserChannelProfile,
+    getWatchHistory,
 } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
@@ -33,12 +34,13 @@ router.route("/register").post(
 router.route("/login").post(loginUser);
 router.route("/refresh-token").post(refreshAccessToken);
 
-//secured routes
+// secured routes
 router.route("/logout").post(verifyJWT, logoutUser);
 router.route("/change-password").post(verifyJWT, changeCurrentPassword);
 
 router.route("/current-user").get(verifyJWT, getCurrentUser);
 router.route("/c/:username").get(verifyJWT, getUserChannelProfile);
+router.route("/history").get(verifyJWT, getWatchHistory);
 
 router.route("/update-account").patch(verifyJWT, updateAccountDetails);
 router
