@@ -291,24 +291,28 @@ const updateAccountDetails = asyncHandler(async (req, res, _) => {
 });
 
 const updateUserAvatar = asyncHandler(async (req, res, _) => {
-    // multer used to get avatar file
-    const avatarLocalPath = req.files?.avatar[0]?.path;
+    const avatarLocalPath = req.file?.path;
     if (!avatarLocalPath) {
-        throw new ApiError(401, "❌ Error While Avatar file is Missing");
+        throw new ApiError(401, "❌ Avatar file is missing");
     }
 
     const avatar = await uploadOnCloudinary(avatarLocalPath);
-    if (!avatar) {
-        throw new ApiError(401, "❌ Error While Uploading on Avatar");
+
+    if (!avatar.url) {
+        throw new ApiError(401, "❌ Not uploaded on avatar");
     }
 
-    // TODO: delete old image - assignment
+    const user = await User.findById(req.user?._id).select("-password");
 
-    const user = await User.findByIdAndUpdate(
-        req.user?._id,
-        { $set: { avatar: avatar.url } },
-        { new: true }
-    ).select("-password");
+    if (user?.avatar && user.avatar?.publicId) {
+        const deleteAvatar = await removeOnCloudinary(user?.avatar?.publicId);
+        if (!deleteAvatar) {
+            throw new ApiError(401, "Old avatar image is not deleted");
+        }
+    }
+
+    user.avatar = avatar.url;
+    await user.save({ validateBeforeSave: false });
 
     return res
         .status(200)
@@ -322,14 +326,13 @@ const updateUserAvatar = asyncHandler(async (req, res, _) => {
 });
 
 const updateUserCoverImage = asyncHandler(async (req, res, _) => {
-    // multer used to get avatar file
     const coverImageLocalPath = req?.file?.path;
-    console.log(coverImageLocalPath)
     if (!coverImageLocalPath) {
         throw new ApiError(401, "❌ Error While coverImage file is Missing");
     }
 
     const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+
     if (!coverImage.url) {
         throw new ApiError(401, "❌ Error While Uploading on coverImage");
     }
@@ -348,7 +351,7 @@ const updateUserCoverImage = asyncHandler(async (req, res, _) => {
     }
 
     user.coverImage = coverImage.url;
-    await user.save();
+    await user.save({ validateBeforeSave: false });
 
     // const user = await User.findByIdAndUpdate(
     //     req.user?._id,
