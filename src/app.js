@@ -19,11 +19,13 @@ app.use(cookieParser());
 
 // Importing routes
 import userRouter from "./routes/user.router.js";
-import videoRouter from "./routes/videoRouter.router.js";
+import videoRouter from "./routes/video.router.js";
+import tweetRouter from "./routes/tweet.router.js";
 
 // Routes Deceleration
 // http://localhost:8000/api/v1/users
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/videos", videoRouter);
+app.use("/api/v1/tweets", tweetRouter);
 
 export { app };
