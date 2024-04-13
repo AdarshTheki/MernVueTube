@@ -89,11 +89,11 @@ const registerUser = asyncHandler(async (req, res, _) => {
         coverImage: coverImage?.url || "",
         email,
         password,
-        username: username.toLowerCase(),
+        username: username?.toLowerCase(),
     });
 
     // Find the newly created user and exclude password and refreshToken fields
-    const createdUser = await User.findById(user._id).select(
+    const createdUser = await User.findById(user?._id).select(
         "-password -refreshToken"
     );
 
