@@ -13,7 +13,10 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
         // console.log("middleware accessToken: ", token);
 
         if (!token) {
-            throw new ApiError(401, "❌ Un-Authorization Request");
+            throw new ApiError(
+                401,
+                "Un-Authorization Request ! Please Login User"
+            );
         }
 
         const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
@@ -23,12 +26,15 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
         );
 
         if (!user) {
-            throw new ApiError(401, "❌ Invalid Access Token");
+            throw new ApiError(401, "Invalid Access Token ! Please Login User");
         }
 
         req.user = user;
         next();
     } catch (error) {
-        throw new ApiError(401, error?.message || "❌ Invalid Access Token");
+        throw new ApiError(
+            500,
+            error?.message || "Authentication invalid internal error"
+        );
     }
 });

@@ -1,11 +1,64 @@
-## Summary of this project
-This project is a complex backend project that is built with nodejs, expressjs, mongodb, mongoose, jwt, bcrypt, and many more. This project is a complete backend project that has all the features that a backend project should have. We are building a complete video hosting website similar to youtube with all the features like login, signup, upload video, like, dislike, comment, reply, subscribe, unsubscribe, and many more.
+# My Awesome Backend
 
-Project uses all standard practices like JWT, bcrypt, access tokens, refresh Tokens and many more. We have spent a lot of time in building this project and we are sure that you will learn a lot from this project.
+This project is a complex backend project that is built with `node.js`, `express.js`, `mongoDB`, `mongoose`, `jwt`, `bcrypt`, `cloudinary`, and many more. This project is a complete backend project that has all the features that a backend project should have. We are building a complete video hosting website similar to youtube with all the features like `login`, `register`, `upload image/video`, `like`, `dislike`, `comment`, `reply`, `subscribe`, `unsubscribe`, and many more.
 
-### Top Contributer to complete all TODOs
+## Getting Started
 
-#### Spiderman (just sample) Link to Repo
+1. Clone this repository to your local machine.
+2. Install the required dependencies using `npm install`.
+3. Create a `.env` file and configure your environment variables (e.g., database connection string, secret keys).
+4. Run the server using `npm start`.
 
-### How to contribute in this open source Project
-First, please understand that this is not your regular project to merge your PR. This repo requires you to finish all assignments that are in controller folder. We don't accept half work, please finish all controllers and then reach us out on Discord or Twitter and after checking your repo, I will add link to your repo in this readme.
+## Features
+
+### User Management
+
+- **User Controller**: Handles user registration, login, and authentication.
+- **User Model**: Defines the user schema and interacts with the database.
+- **Authentication Middleware**: Protects routes using JSON Web Tokens (JWT).
+
+### Likes
+
+- **Like Controller**: Manages likes for various content (videos, tweets, etc.).
+
+### Videos
+
+- **Video Controller**: Handles video uploads, retrieval, and management.
+- **Video Model**: Defines the video schema and interacts with the database.
+- **Multer Middleware**: Used for handling file uploads (e.g., video files).
+
+### Subscriptions
+
+- **Subscription Controller**: Manages user subscriptions to channels or content.
+
+### Playlists
+
+- **Playlist Controller**: Handles playlist creation, modification, and retrieval.
+
+### Tweets
+
+- **Tweet Controller**: Manages tweets (short messages) from users.
+
+### Comments
+
+- **Comment Controller**: Handles comments on videos, tweets, etc.
+- **Comment Model**: Defines the comment schema and interacts with the database.
+
+### Dashboard
+
+- **Dashboard Controller**: Provides statistics and insights (e.g., total video views, subscribers, likes).
+
+## Packages Used
+
+- **cloudinary**: For image and video storage and manipulation.
+- **cookie-parser**: Middleware for handling cookies.
+- **dotenv**: Loads environment variables from a `.env` file.
+- **cors**: Enables cross-origin resource sharing.
+- **express**: Web application framework for Node.js.
+- **jsonwebtoken**: For creating and verifying JWTs.
+- **mongoose**: MongoDB object modeling tool.
+- **multer**: Middleware for handling file uploads.
+
+## Contributing
+
+Feel free to contribute by opening issues or submitting pull requests. Let's make this backend even more awesome!
