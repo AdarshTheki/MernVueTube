@@ -9,7 +9,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
     const { page = 1, limit = 10 } = req.query;
 
     if (!isValidObjectId(videoId)) {
-        throw new ApiError(401, "Invalid video ID");
+        throw new ApiError(401, "comment :: Invalid video ID");
     }
     try {
         const commentData = await Comment.find({ video: videoId })
@@ -17,20 +17,21 @@ const getVideoComments = asyncHandler(async (req, res) => {
             .skip((page - 1) * limit);
 
         if (commentData.length === 0) {
-            throw new ApiError(404, "video comments not found!!");
+            throw new ApiError(404, "comment :: video comments not found!!");
         }
 
         res.status(200).json(
             new ApiResponse(
                 200,
                 commentData,
-                "videos comments fetched successfully"
+                "comment :: videos comments fetched successfully"
             )
         );
     } catch (error) {
         throw new ApiError(
             500,
-            error.message || "Something went wrong. Like not updated!!"
+            error.message ||
+                "comment :: Something went wrong. Like not updated!!"
         );
     }
 });
@@ -40,11 +41,11 @@ const addComment = asyncHandler(async (req, res) => {
     const { content } = req.body;
 
     if (!isValidObjectId(videoId)) {
-        throw new ApiError(401, "Invalid video ID");
+        throw new ApiError(401, "comment :: Invalid video ID");
     }
 
     if (!content) {
-        throw new ApiError(401, "Invalid content");
+        throw new ApiError(401, "comment :: Invalid content");
     }
 
     try {
@@ -55,14 +56,18 @@ const addComment = asyncHandler(async (req, res) => {
         });
 
         if (!commentData) {
-            throw new ApiError(404, "Invalid new comments");
+            throw new ApiError(404, "comment :: Invalid new comments");
         }
 
         res.status(200).json(
-            new ApiResponse(200, commentData, "New comment successfully added.")
+            new ApiResponse(
+                200,
+                commentData,
+                "comment :: New comment successfully added."
+            )
         );
     } catch (error) {
-        throw new ApiError(500, "Error while adding comment.");
+        throw new ApiError(500, "comment :: Error while adding comment.");
     }
 });
 
@@ -71,11 +76,11 @@ const updateComment = asyncHandler(async (req, res) => {
     const { content } = req.body;
 
     if (!isValidObjectId(commentId)) {
-        throw new ApiError(401, "Invalid video ID");
+        throw new ApiError(401, "comment :: Invalid video ID");
     }
 
     if (!content) {
-        throw new ApiError(401, "Invalid content");
+        throw new ApiError(401, "comment :: Invalid content");
     }
 
     try {
@@ -89,14 +94,18 @@ const updateComment = asyncHandler(async (req, res) => {
         );
 
         if (!commentData) {
-            throw new ApiError(404, "Invalid update comments");
+            throw new ApiError(404, "comment :: Invalid update comments");
         }
 
         res.status(200).json(
-            new ApiResponse(200, commentData, "updating comment successfully")
+            new ApiResponse(
+                200,
+                commentData,
+                "comment :: updating comment successfully"
+            )
         );
     } catch (error) {
-        throw new ApiError(500, "Error while updating comment.");
+        throw new ApiError(500, "comment :: Error while updating comment.");
     }
 });
 
@@ -104,7 +113,7 @@ const deleteComment = asyncHandler(async (req, res) => {
     const { commentId } = req.params;
 
     if (!commentId) {
-        throw new ApiError(400, "Invalid comment ID");
+        throw new ApiError(400, "comment :: Invalid comment ID");
     }
 
     try {
@@ -114,14 +123,14 @@ const deleteComment = asyncHandler(async (req, res) => {
         });
 
         if (!commentData) {
-            throw new ApiError(404, "Invalid delete comments");
+            throw new ApiError(404, "comment :: Invalid delete comments");
         }
 
         res.status(200).json(
-            new ApiResponse(200, {}, "successfully delete comment")
+            new ApiResponse(200, {}, "comment :: successfully delete comment")
         );
     } catch (error) {
-        throw new ApiError(500, "Error while deleting comment.");
+        throw new ApiError(500, "comment :: Error while deleting comment.");
     }
 });
 

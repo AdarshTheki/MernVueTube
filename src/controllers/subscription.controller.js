@@ -8,7 +8,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
     const { channelId } = req.params;
 
     if (!isValidObjectId(channelId)) {
-        throw new ApiError(400, "Invalid video id");
+        throw new ApiError(400, "Subscription :: Invalid video id");
     }
 
     const channelData = await Subscription.findOne({
@@ -37,13 +37,14 @@ const toggleSubscription = asyncHandler(async (req, res) => {
                 new ApiResponse(
                     201,
                     data,
-                    `${channelData ? "Un-subscribed" : "Subscribed"} successfully`
+                    `Subscription :: ${channelData ? "Un-subscribed" : "Subscribed"} successfully`
                 )
             );
     } catch (error) {
         throw new ApiError(
             500,
-            error?.message || "Something went wrong. Subscription not updated!!"
+            error?.message ||
+                "Subscription :: Something went wrong. Subscription not updated!!"
         );
     }
     // TODO: toggle subscription
@@ -54,7 +55,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
     const { channelId } = req.params;
 
     if (!isValidObjectId(channelId)) {
-        throw new ApiError(400, "Invalid channel id");
+        throw new ApiError(400, "Subscription :: Invalid channel id");
     }
 
     try {
@@ -92,13 +93,13 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
                 new ApiResponse(
                     200,
                     subscriptions,
-                    "Subscription fetched successfully"
+                    "Subscription :: Fetched successfully"
                 )
             );
     } catch (error) {
         throw new ApiError(
             500,
-            error?.message || "Something went wrong. Subscription not fetched!!"
+            error?.message || "Subscription :: Subscription not fetched!!"
         );
     }
 });
@@ -139,13 +140,13 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
                 new ApiResponse(
                     200,
                     subscribedChannels,
-                    "Subscription fetched successfully"
+                    "Subscription :: fetched successfully"
                 )
             );
     } catch (error) {
         throw new ApiError(
             500,
-            error?.message || "Something went wrong. Subscription not fetched!!"
+            error?.message || "Subscription :: Something went wrong."
         );
     }
 });

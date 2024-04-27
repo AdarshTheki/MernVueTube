@@ -10,12 +10,10 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
             req.headers["Authorization"]?.replace("Bearer ", "") ||
             "";
 
-        // console.log("middleware accessToken: ", token);
-
         if (!token) {
             throw new ApiError(
                 401,
-                "auth middleware :: Un-Authorization Request ! Please Login User"
+                "auth middleware :: Un-Authorization Request"
             );
         }
 
@@ -26,7 +24,7 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
         );
 
         if (!user) {
-            throw new ApiError(401, "Invalid Access Token ! Please Login User");
+            throw new ApiError(401, "auth middleware :: Invalid Access Token");
         }
 
         req.user = user;
@@ -34,7 +32,8 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     } catch (error) {
         throw new ApiError(
             500,
-            error?.message || "auth middleware :: Authentication invalid internal error"
+            "auth middleware :: " + error?.message ||
+                "auth middleware :: invalid internal error"
         );
     }
 });

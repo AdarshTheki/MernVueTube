@@ -8,7 +8,7 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
 
     if (!isValidObjectId(videoId)) {
-        throw new ApiError(400, "Invalid video ID");
+        throw new ApiError(400, "Likes :: Invalid video ID");
     }
 
     let data, action;
@@ -30,12 +30,12 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
         }
 
         res.status(201).json(
-            new ApiResponse(201, data || {}, `${action} successfully`)
+            new ApiResponse(201, data || {}, `Likes :: ${action} successfully`)
         );
     } catch (error) {
         throw new ApiError(
             500,
-            error.message || "Something went wrong. Like not updated!!"
+            error.message || "Likes :: Something went wrong. Like not updated!!"
         );
     }
 });
@@ -44,7 +44,7 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
     const { commentId } = req.params;
 
     if (!isValidObjectId(commentId)) {
-        throw new ApiError(400, "Invalid comment ID");
+        throw new ApiError(400, "Likes :: Invalid comment ID");
     }
 
     let data, action;
@@ -66,12 +66,12 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
         }
 
         res.status(201).json(
-            new ApiResponse(201, data || {}, `${action} successfully`)
+            new ApiResponse(201, data || {}, `Likes :: ${action} successfully`)
         );
     } catch (error) {
         throw new ApiError(
             500,
-            error.message || "Something went wrong. Like not updated!!"
+            error.message || "Likes :: Something went wrong. Like not updated!!"
         );
     }
 });
@@ -80,7 +80,7 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
     const { tweetId } = req.params;
 
     if (!isValidObjectId(tweetId)) {
-        throw new ApiError(400, "Invalid tweet ID");
+        throw new ApiError(400, "Likes :: Invalid tweet ID");
     }
 
     let data, action;
@@ -102,12 +102,12 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
         }
 
         res.status(201).json(
-            new ApiResponse(201, data || {}, `${action} successfully`)
+            new ApiResponse(201, data || {}, `Likes :: ${action} successfully`)
         );
     } catch (error) {
         throw new ApiError(
             500,
-            error.message || "Something went wrong. Like not updated!!"
+            error.message || "Likes :: Something went wrong. Like not updated!!"
         );
     }
 });
@@ -125,13 +125,13 @@ const getLikedVideos = asyncHandler(async (req, res) => {
             new ApiResponse(
                 200,
                 likedVideos,
-                `Liked videos fetched successfully`
+                `Likes :: Liked videos fetched successfully`
             )
         );
     } catch (error) {
         throw new ApiError(
             500,
-            error.message || "Something went wrong. Like not updated!!"
+            error.message || "Likes :: Something went wrong. Like not updated!!"
         );
     }
 });

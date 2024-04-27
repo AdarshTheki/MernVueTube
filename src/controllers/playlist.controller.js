@@ -8,11 +8,14 @@ const createPlaylist = asyncHandler(async (req, res) => {
     const { name, description } = req.body;
     try {
         if (!isValidObjectId(req.user?._id)) {
-            throw new ApiError(400, "Invalid user ID");
+            throw new ApiError(400, "Playlists :: Invalid user ID");
         }
 
         if (!name || !description) {
-            throw new ApiError(401, "Invalid name or description");
+            throw new ApiError(
+                401,
+                "Playlists :: Invalid name or description"
+            );
         }
 
         const playlist = new Playlist({
@@ -24,10 +27,13 @@ const createPlaylist = asyncHandler(async (req, res) => {
         await playlist.save({ validateBeforeSave: false });
 
         res.status(200).json(
-            new ApiResponse(200, playlist, "Playlist created successfully")
+            new ApiResponse(200, playlist, "Playlists :: Created successfully")
         );
     } catch (error) {
-        throw new ApiError(500, error?.message || "Internal Error");
+        throw new ApiError(
+            500,
+            error?.message || "Playlists :: Internal Error"
+        );
     }
 });
 
@@ -35,16 +41,23 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
     const { userId } = req.params;
     try {
         if (!isValidObjectId(userId)) {
-            throw new ApiError(400, "Invalid params of user ID");
+            throw new ApiError(400, "Playlists :: Invalid params of user ID");
         }
 
         const playlists = await Playlist.find({ owner: userId });
 
         res.status(200).json(
-            new ApiResponse(200, playlists, "Playlists fetched successfully")
+            new ApiResponse(
+                200,
+                playlists,
+                "Playlists :: Fetched successfully"
+            )
         );
     } catch (error) {
-        throw new ApiError(500, error?.message || "Internal errors");
+        throw new ApiError(
+            500,
+            error?.message || "Playlists :: Internal errors"
+        );
     }
 });
 
@@ -52,7 +65,10 @@ const getPlaylistById = asyncHandler(async (req, res) => {
     const { playlistId } = req.params;
     try {
         if (!isValidObjectId(playlistId)) {
-            throw new ApiError(400, "Invalid params of playlist ID");
+            throw new ApiError(
+                400,
+                "Playlists :: Invalid params of playlist ID"
+            );
         }
 
         const playlist = await Playlist.find({ _id: playlistId }).populate(
@@ -63,11 +79,14 @@ const getPlaylistById = asyncHandler(async (req, res) => {
             new ApiResponse(
                 200,
                 playlist,
-                "Playlist by ID fetched successfully"
+                "Playlists :: fetched successfully"
             )
         );
     } catch (error) {
-        throw new ApiError(500, error?.message || "Internal errors");
+        throw new ApiError(
+            500,
+            error?.message || "Playlists :: Internal errors"
+        );
     }
 });
 
@@ -75,7 +94,7 @@ const toggleVideoToPlaylist = asyncHandler(async (req, res) => {
     const { playlistId, videoId } = req.params;
     try {
         if (!isValidObjectId(playlistId) || !isValidObjectId(videoId)) {
-            throw new ApiError(404, "Playlist or video not found");
+            throw new ApiError(404, "Playlists :: playlist or video not found");
         }
 
         const playlist = await Playlist.findOne({
@@ -84,7 +103,7 @@ const toggleVideoToPlaylist = asyncHandler(async (req, res) => {
         });
 
         if (!playlist) {
-            throw new ApiError(401, "Playlist does not exist");
+            throw new ApiError(401, "Playlists :: playlist does not exist");
         }
 
         const index = playlist.videos.indexOf(videoId);
@@ -100,13 +119,13 @@ const toggleVideoToPlaylist = asyncHandler(async (req, res) => {
             new ApiResponse(
                 200,
                 playlist,
-                "Video toggled in playlist successfully"
+                "Playlists :: Video toggled in playlist successfully"
             )
         );
     } catch (error) {
         throw new Error(
             500,
-            error?.message || "Video already exists in playlist"
+            error?.message || "Playlists :: Video already exists in playlist"
         );
     }
 });
@@ -115,7 +134,10 @@ const deletePlaylist = asyncHandler(async (req, res) => {
     const { playlistId } = req.params;
     try {
         if (!isValidObjectId(playlistId)) {
-            throw new ApiError(400, "Invalid params of playlist ID");
+            throw new ApiError(
+                400,
+                "Playlists :: Invalid params of playlist ID"
+            );
         }
 
         const playlist = await Playlist.findOneAndDelete({
@@ -123,14 +145,24 @@ const deletePlaylist = asyncHandler(async (req, res) => {
         });
 
         if (!playlist) {
-            throw new ApiError(404, "un-authorized user for this playlist");
+            throw new ApiError(
+                404,
+                "Playlists :: un-authorized user for this playlist"
+            );
         }
 
         res.status(200).json(
-            new ApiResponse(200, playlist, "playlist deleted successfully")
+            new ApiResponse(
+                200,
+                playlist,
+                "Playlists :: deleted successfully"
+            )
         );
     } catch (error) {
-        throw new ApiError(500, error?.message || "Internal errors");
+        throw new ApiError(
+            500,
+            error?.message || "Playlists :: Internal errors"
+        );
     }
 });
 
@@ -139,11 +171,14 @@ const updatePlaylist = asyncHandler(async (req, res) => {
     const { name, description } = req.body;
     try {
         if (!isValidObjectId(playlistId)) {
-            throw new ApiError(401, "Invalid params of playlist ID");
+            throw new ApiError(
+                401,
+                "Playlists :: Invalid params of playlist ID"
+            );
         }
 
         if (!name || !description) {
-            throw new ApiError(401, "Invalid name or description");
+            throw new ApiError(401, "Playlists :: Invalid name or description");
         }
 
         const playlist = await Playlist.findOneAndUpdate(
@@ -154,14 +189,20 @@ const updatePlaylist = asyncHandler(async (req, res) => {
         );
 
         if (!playlist) {
-            throw new ApiError(404, "Un-Authorized user for this playlist");
+            throw new ApiError(
+                404,
+                "Playlists :: Un-Authorized user for this playlist"
+            );
         }
 
         res.status(200).json(
-            new ApiResponse(200, playlist, "playlist updated successfully")
+            new ApiResponse(200, playlist, "Playlists :: Updated successfully")
         );
     } catch (error) {
-        throw new ApiError(500, error?.message || "Internal errors");
+        throw new ApiError(
+            500,
+            error?.message || "Playlists :: Internal errors"
+        );
     }
 });
 

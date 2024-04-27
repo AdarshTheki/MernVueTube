@@ -35,13 +35,14 @@ const getChannelStats = asyncHandler(async (req, res) => {
                     totalLikes: likesCount,
                     totalVideoViews: totalViews,
                 },
-                "successfully fetching videos, subscribe, subscribeTo, likes and views stats"
+                "Dashboard :: successfully fetching videos, subscribe, subscribeTo, likes and views stats"
             )
         );
     } catch (error) {
         throw new ApiError(
             500,
-            error?.message || "Something went wrong. Please try again later."
+            error?.message ||
+                "Dashboard :: Something went wrong. Please try again later."
         );
     }
 });
@@ -58,18 +59,23 @@ const getChannelVideos = asyncHandler(async (req, res) => {
                     new ApiResponse(
                         200,
                         {},
-                        "No videos found for this channel."
+                        "Dashboard :: No videos found for this channel."
                     )
                 );
         }
 
         res.status(200).json(
-            new ApiResponse(200, videosData, "Videos fetched successfully.")
+            new ApiResponse(
+                200,
+                videosData,
+                "Dashboard :: Videos fetched successfully."
+            )
         );
     } catch (error) {
         throw new ApiError(
             500,
-            error?.message || "Something went wrong. Please try again later."
+            error?.message ||
+                "Dashboard :: Something went wrong. Please try again later."
         );
     }
 });
